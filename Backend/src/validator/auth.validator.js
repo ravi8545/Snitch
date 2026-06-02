@@ -18,8 +18,8 @@ export const validateRegisterUser = [
     body("contact").notEmpty().withMessage("Contact number is required").isMobilePhone().withMessage("Invalid contact number"),
     body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 characters long"),
     body("fullname").notEmpty().withMessage("Full name is required").isLength({ min: 3 }).withMessage("Full name must be at least 3 characters long"),
-
-
+    body("role").isBoolean().withMessage("Role must be a boolean value"),
+    
     validateRequest
 
 ]
