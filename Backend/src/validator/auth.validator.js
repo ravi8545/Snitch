@@ -15,11 +15,17 @@ function validateRequest(req, res, next) {
 
 export const validateRegisterUser = [
     body("email").isEmail().withMessage("Invalid email address"),
-    body("contact").notEmpty().withMessage("Contact number is required").isMobilePhone().withMessage("Invalid contact number"),
+    body("contact").notEmpty().withMessage("Contact number is required").customSanitizer(value => typeof value === 'string' ? value.replace(/\s+/g, '') : value).isMobilePhone().withMessage("Invalid contact number"),
     body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 characters long"),
     body("fullname").notEmpty().withMessage("Full name is required").isLength({ min: 3 }).withMessage("Full name must be at least 3 characters long"),
-    body("role").isBoolean().withMessage("Role must be a boolean value"),
+    body("isSeller").isBoolean().withMessage("isSeller must be a boolean value"),
     
     validateRequest
 
+]
+
+export const validateLoginUser=[
+    body("email").isEmail().withMessage("Invalid email address"),
+    body("password").notEmpty().withMessage("Password is required"),
+    validateRequest
 ]
