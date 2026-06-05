@@ -14,7 +14,6 @@ async function sendTokenResponse(user, res, message) {
     return res.status(200).json({
         success: true,
         message,
-        token,
         user: {
             id: user._id,
             email: user.email,
@@ -106,7 +105,18 @@ const login = async (req, res) => {
     }
 };
 
+const googleCallback = async (req, res)=>{
+    console.log(req.user);
+
+    res.redirect("http://localhost:5173/");
+
+}
+
+
+
+
 export default {
     register,
-    login
+    login,
+    googleCallback
 };
