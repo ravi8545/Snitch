@@ -6,25 +6,36 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+
     email: {
         type: String,
         required: true,
         unique: true,
     },
+
     password: {
         type: String,
-        required: true,
+        required: function () {
+            return !this.googleId;
+        },
     },
+
     contact: {
         type: String,
-        required: true,
     },
+
     role: {
         type: String,
         enum: ["buyer", "seller"],
-        required: true,
         default: "buyer",
     },
+
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true,
+    },
+
     createdAt: {
         type: Date,
         default: Date.now,
@@ -32,20 +43,27 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre("save", async function () {
-    if (!this.isModified("password")) {
-        return next();
+    try {
+        // Google users don't have passwords
+        if (!this.password) {
+            return;
+        }
+
+        if (!this.isModified("password")) {
+            return;
+        }
+
+        this.password = await bcrypt.hash(this.password, 10);
+    } catch (error) {
+        throw error;
     }
-
-    const hash = await bcrypt.hash(this.password, 10);
-    this.password = hash;
-
-   
 });
 
 userSchema.methods.comparePassword = async function (password) {
+    if (!this.password) return false;
+
     return await bcrypt.compare(password, this.password);
 };
-
 
 const userModel = mongoose.model("User", userSchema);
 

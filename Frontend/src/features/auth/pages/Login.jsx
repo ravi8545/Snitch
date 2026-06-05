@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../hook/useAuth';
 import { useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
+import GoogleButton from '../components/GoogleButton';
 
 const Login = () => {
   const { handleLogin } = useAuth();
@@ -212,6 +213,16 @@ const Login = () => {
               {loading ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
+
+          {/* Divider */}
+          <div className="flex items-center gap-4">
+            <div className="flex-1 h-px bg-[#262626]"></div>
+            <span className="text-xs text-[#555] tracking-widest uppercase" style={{ fontFamily: "'JetBrains Mono', monospace" }}>OR</span>
+            <div className="flex-1 h-px bg-[#262626]"></div>
+          </div>
+
+          {/* Google Auth Button */}
+          <GoogleButton />
 
           {/* Footer Link */}
           <p

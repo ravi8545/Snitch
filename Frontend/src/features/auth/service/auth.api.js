@@ -17,6 +17,11 @@ export const login=async({email, password})=>{
     return response.data;
 }
 
+export const googleAuth=async()=>{
+    // Redirect to Google OAuth endpoint
+    window.location.href = '/api/auth/google';
+}
+
 
 
 
