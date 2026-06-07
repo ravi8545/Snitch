@@ -22,6 +22,11 @@ export const googleAuth=async()=>{
     window.location.href = '/api/auth/google';
 }
 
+export const getMe=async()=>{
+    const response = await authApiInstance.get("/me");
+    return response.data;
+}
+
 
 
 

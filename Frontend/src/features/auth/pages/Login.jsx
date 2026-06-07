@@ -26,12 +26,16 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = await handleLogin({
+    const user = await handleLogin({
       email: formData.email,
       password: formData.password,
     });
-    if (success) {
-      navigate('/');
+    if (user) {
+      if (user.role === "buyer") {
+        navigate("/");
+      } else if (user.role === "seller") {
+        navigate("/seller/dashboard");
+      }
     }
   };
 
@@ -40,7 +44,7 @@ const Login = () => {
       {/* ── Visual Brand Panel (Left Side, Hidden on Mobile) ── */}
       <div className="hidden md:flex md:w-1/2 relative flex-col justify-between p-12 overflow-hidden border-r border-[#262626]">
         {/* Background Image */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center transition-transform duration-10000 hover:scale-105"
           style={{ backgroundImage: "url('/brand_model.png')" }}
         />
@@ -52,7 +56,7 @@ const Login = () => {
           <div className="h-8 w-8 bg-[#FFD700] rounded-sm flex items-center justify-center">
             <span className="text-[#0D0D0D] font-bold text-lg" style={{ fontFamily: "'JetBrains Mono', monospace" }}>S</span>
           </div>
-          <span 
+          <span
             className="text-xl font-bold tracking-widest text-[#E5E2E1]"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
@@ -62,19 +66,19 @@ const Login = () => {
 
         {/* Slogan / Creative Copy */}
         <div className="relative z-20 space-y-4 max-w-lg">
-          <p 
+          <p
             className="text-xs uppercase tracking-widest text-[#FFD700]"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             Spring / Summer Collection 2026
           </p>
-          <h2 
+          <h2
             className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#E5E2E1] leading-tight"
             style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
           >
             UNAPOLOGETIC STREETWEAR.
           </h2>
-          <p 
+          <p
             className="text-sm text-[#A0A0A0] leading-relaxed"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
@@ -91,7 +95,7 @@ const Login = () => {
       {/* ── Form Panel (Right Side) ── */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-8 md:p-16">
         <div className="w-full max-w-md space-y-10">
-          
+
           {/* Header */}
           <div className="space-y-3">
             {/* Mobile Brand Logo */}
@@ -99,7 +103,7 @@ const Login = () => {
               <div className="h-6 w-6 bg-[#FFD700] rounded-sm flex items-center justify-center">
                 <span className="text-[#0D0D0D] font-bold text-sm" style={{ fontFamily: "'JetBrains Mono', monospace" }}>S</span>
               </div>
-              <span 
+              <span
                 className="text-md font-bold tracking-widest text-[#E5E2E1]"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
@@ -122,7 +126,7 @@ const Login = () => {
 
           {/* Error Banner */}
           {error && (
-            <div 
+            <div
               className="p-4 rounded border border-red-950 bg-red-950/40 text-red-400 text-sm text-left flex items-start gap-2.5"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
