@@ -10,17 +10,14 @@ export const authenticateSeller = async (req, res, next) => {
 
     if (!token) {
         return res.status(401).json({
-            message: "Unathorized"
+            message: "Unauthorized"
         })
     }
 
 
     try {
         const decoded = jwt.verify(token, config.JWT_SECRET);
-        console.log("Decoded JWT:", decoded.id);
         const user = await userModel.findById(decoded.id);
-        console.log(user);
-        
       
         if (!user) {
             return res.status(401).json({
@@ -36,9 +33,7 @@ export const authenticateSeller = async (req, res, next) => {
 
         req.user = user;
         next();
-
-
-
+        
     } catch (err) {
         return res.status(401).json({
             message: "Unauthorized - Invalid Token"
