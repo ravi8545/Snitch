@@ -36,7 +36,7 @@ const MediaThumb = ({ url, alt, className }) =>
     );
 
 /* ─── Product Card ─── */
-const ProductCard = ({ product, index }) => {
+const ProductCard = ({ product, index, navigate }) => {
     const [hovered, setHovered] = useState(false);
     const coverMedia = product.images?.[0];
     const secondMedia = product.images?.[1];
@@ -46,10 +46,11 @@ const ProductCard = ({ product, index }) => {
 
     return (
         <div
-            className="group relative bg-[#0F0F0F] border border-[#1E1E1E] rounded overflow-hidden flex flex-col transition-all duration-300 hover:border-[#FFD700]/30 hover:shadow-[0_0_40px_-10px_rgba(255,215,0,0.12)]"
+            className="group relative bg-[#0F0F0F] border border-[#1E1E1E] rounded overflow-hidden flex flex-col transition-all duration-300 hover:border-[#FFD700]/30 hover:shadow-[0_0_40px_-10px_rgba(255,215,0,0.12)] cursor-pointer"
             style={{ animationDelay: `${index * 60}ms` }}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
+            onClick={() => navigate(`/seller/product/${product._id}`)}
         >
             {/* Media */}
             <div className="relative aspect-[4/3] bg-[#141414] overflow-hidden">
@@ -389,11 +390,13 @@ const Dashboard = () => {
                     </div>
                 )}
 
+    
+
                 {/* ── Product Grid ── */}
                 {!loading && filtered.length > 0 && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                         {filtered.map((product, i) => (
-                            <ProductCard key={product._id} product={product} index={i} />
+                            <ProductCard key={product._id} product={product} index={i} navigate={navigate} />
                         ))}
                     </div>
                 )}

@@ -2,8 +2,8 @@ import axios from "axios";
 
 
 const productApiInstance = axios.create({
-    baseURL: "/api/products",
-    withCredentials: true,
+      baseURL: "/api/products",
+      withCredentials: true,
 });
 
 
@@ -22,7 +22,7 @@ export async function getAllProducts() {
       return response.data;
 }
 
-export async function getProductById(id){
+export async function getProductById(id) {
       const response = await productApiInstance.get(`/detail/${id}`);
       return response.data;
 }
