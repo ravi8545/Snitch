@@ -118,4 +118,62 @@ export async function getProductDetails(req, res) {
     })
 }
 
+export async function addProductVariant(req, res) {
+    try {
+        const productId = req.params.productId;
+
+        const product = await productModel.findOne({
+            _id: productId,
+            seller: req.user._id
+        });
+
+        if (!product) {
+            return res.status(400).json({
+                success: false,
+                message: "Product not found"
+            });
+        }
+
+        const files = req.files;
+        const images = [];
+
+        if (files && files.length !== 0) {
+            const uploadedImages = await Promise.all(files.map(async (file) => {
+                return await uploadFile({
+                    buffer: file.buffer,
+                    fileName: file.originalname
+                });
+            }));
+            images.push(...uploadedImages);
+        }
+        
+        const priceAmount = Number(req.body.priceAmount);
+        const stock = Number(req.body.stock) || 0;
+        const attributes = JSON.parse(req.body.attributes || "{}");
+
+        product.variants.push({
+            images: images,
+            stock: stock,
+            price: {
+                amount: priceAmount || product.price.amount,
+                currency: product.price.currency
+            },
+            attributes: attributes
+        });
+
+        await product.save();
+
+        res.status(201).json({
+            success: true,
+            message: "Variant added successfully",
+            product
+        });
+    } catch (error) {
+        console.error("Add Product Variant Error:", error);
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
 
